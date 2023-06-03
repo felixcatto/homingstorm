@@ -1,0 +1,9 @@
+.popup {
+  @apply shadow text-sm;
+  z-index: 1;
+  padding: 4px;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: #fff;
+  overflow-y: auto;
+}

@@ -1,0 +1,85 @@
+.tooltip {
+  pointer-events: none;
+}
+
+.content {
+  background: var(--tooltipColor);
+  color: white;
+  border-radius: 4px;
+  padding: 2px 5px;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  &_outline {
+    background: white;
+    color: var(--tooltipColor);
+    border: 1px solid var(--tooltipColor);
+  }
+}
+
+.carets {
+  transition-delay: calc(var(--tooltipTransitionDuration) * 0.67);
+}
+
+.caretInner,
+.caretOuter {
+  position: absolute;
+  display: block;
+  &_top {
+    bottom: 0;
+    left: 50%;
+    border-top: var(--tooltipCaretHeight) solid var(--tooltipColor);
+    border-bottom: 0px solid transparent;
+    border-right: var(--tooltipCaretWidth) solid transparent;
+    border-left: var(--tooltipCaretWidth) solid transparent;
+    transform: translate(-50%, 100%);
+  }
+  &_bottom {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    border-top: 0px solid transparent;
+    border-bottom: var(--tooltipCaretHeight) solid var(--tooltipColor);
+    border-right: var(--tooltipCaretWidth) solid transparent;
+    border-left: var(--tooltipCaretWidth) solid transparent;
+  }
+  &_right {
+    top: 50%;
+    left: 0;
+    transform: translate(-100%, -50%);
+    border-top: var(--tooltipCaretWidth) solid transparent;
+    border-bottom: var(--tooltipCaretWidth) solid transparent;
+    border-right: var(--tooltipCaretHeight) solid var(--tooltipColor);
+    border-left: 0px solid transparent;
+  }
+  &_left {
+    top: 50%;
+    right: 0;
+    transform: translate(100%, -50%);
+    border-top: var(--tooltipCaretWidth) solid transparent;
+    border-bottom: var(--tooltipCaretWidth) solid transparent;
+    border-right: 0px solid transparent;
+    border-left: var(--tooltipCaretHeight) solid var(--tooltipColor);
+  }
+}
+
+.caretOuter {
+  display: none;
+  &_outline {
+    display: block;
+  }
+  &_top {
+    bottom: 2px;
+    border-top: var(--tooltipCaretHeight) solid white;
+  }
+  &_bottom {
+    top: 2px;
+    border-bottom: var(--tooltipCaretHeight) solid white;
+  }
+  &_right {
+    left: 2px;
+    border-right: var(--tooltipCaretHeight) solid white;
+  }
+  &_left {
+    right: 2px;
+    border-left: var(--tooltipCaretHeight) solid white;
+  }
+}

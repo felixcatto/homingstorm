@@ -1,0 +1,108 @@
+.friendToChat {
+  @apply rounded;
+  display: flex;
+  cursor: pointer;
+  transition: all 0.15s;
+  &:hover {
+    background: #eee;
+  }
+  &_selected {
+    color: white;
+    background: var(--secondary);
+    &:hover {
+      background: var(--secondary);
+    }
+  }
+}
+
+.friendName {
+  @apply text-lg;
+  color: var(--secondary);
+  &_selected {
+    color: white;
+  }
+}
+
+.friendLastMessage {
+  @apply text-sm;
+  width: 280px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.messages {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  height: calc(100vh - var(--headerHeight) - var(--content-py) * 2);
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: url('/img/messagesBackground.jpg');
+  background-size: cover;
+  overflow-y: auto;
+}
+
+.messagesPlaceholder {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 4px 10px;
+  color: white;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  line-height: 1.25;
+}
+
+.messageContent {
+  position: relative;
+  max-width: 600px;
+  padding: 4px 10px;
+  background: white;
+  border-radius: 6px;
+  &_own {
+    background: var(--secondary-light);
+  }
+  &:hover .messageIcon {
+    opacity: 1;
+  }
+}
+
+.messageAuthor {
+  @apply text-lg;
+  color: var(--secondary);
+  &_own {
+    color: var(--primary-dark);
+  }
+}
+
+.messageIcon {
+  cursor: pointer;
+  user-select: none;
+  opacity: 0;
+  transition-duration: 0.15s;
+  transition-delay: 0.3s, 0s;
+  transition-property: opacity, color;
+}
+
+.messageSpinner {
+  position: absolute;
+  top: 9px;
+  right: 5px;
+}
+
+.messageInputWrap {
+  position: relative;
+}
+
+.messageInputControls {
+  @apply absolute left-3 right-1 flex items-center justify-between;
+}
+
+.messageInput {
+  resize: none;
+  &_editMode {
+    padding-top: 30px;
+  }
+}

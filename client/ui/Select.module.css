@@ -1,0 +1,35 @@
+.popup {
+  @apply shadow;
+  z-index: 1;
+  display: inline-block;
+  min-width: 250px;
+  padding: 4px;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.option {
+  min-height: 40px;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover,
+  &_keyboardChoosen {
+    background: #eee;
+  }
+  &_nothingFound:hover {
+    background: initial;
+    cursor: default;
+  }
+  &_selected {
+    color: white;
+    background: var(--secondary);
+    &:hover {
+      background: var(--secondary);
+    }
+  }
+}

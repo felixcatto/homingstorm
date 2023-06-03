@@ -1,0 +1,45 @@
+@import '../../../node_modules/bootstrap/scss/mixins/banner';
+@import '../../../node_modules/bootstrap/scss/functions';
+@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../node_modules/bootstrap/scss/mixins/container';
+@import '../../../node_modules/bootstrap/scss/mixins/grid';
+
+$grid-columns: 12;
+$grid-gutter-width: 24px;
+$container-padding-x: $grid-gutter-width;
+
+$gutters: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 16px,
+  4: 24px,
+);
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+
+@include bsBanner(Grid);
+@import '../../../node_modules/bootstrap/scss/containers';
+.row {
+  @include make-row();
+  > * {
+    @include make-col-ready();
+  }
+}
+@include make-grid-columns();

@@ -1,0 +1,19 @@
+rainoffire.ru {
+  @websockets {
+    header Connection Upgrade
+    header Upgrade websocket
+  }
+
+  reverse_proxy @websockets {$WSS_HOST}:{$WSS_PORT}
+  reverse_proxy {$APP_HOST}:{$APP_PORT}
+}
+
+localhost {
+  @websockets {
+    header Connection Upgrade
+    header Upgrade websocket
+  }
+
+  reverse_proxy @websockets {$WSS_HOST}:{$WSS_PORT}
+  reverse_proxy {$APP_HOST}:{$APP_PORT}
+}

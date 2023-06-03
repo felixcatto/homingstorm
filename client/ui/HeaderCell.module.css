@@ -1,0 +1,26 @@
+.headCell {
+  padding: 0;
+
+  &_sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: 0.15s;
+  }
+  &_sortable:hover {
+    @apply bg-slate-100;
+  }
+}
+
+.filterIcon {
+  @apply ml-2 text-sm text-slate-500 rounded-md;
+  padding: 2px 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+  &:hover {
+    @apply bg-slate-300;
+  }
+  &_active {
+    color: var(--primary);
+  }
+}

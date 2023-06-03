@@ -1,0 +1,29 @@
+.collapse {
+  display: flex;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    height: var(--minimumElHeight);
+    transition: height 0.3s linear, max-height 0s 0.3s linear;
+    max-height: 0px;
+  }
+  &_hidden:after {
+    height: 0;
+    transition: height 0.3s linear;
+    max-height: var(--minimumElHeight);
+  }
+
+  &_hidden > .collapseInner {
+    margin-bottom: -2000px;
+    transition: margin-bottom 0.3s cubic-bezier(1, 0, 1, 1), visibility 0s 0.3s, max-height 0s 0.3s;
+    visibility: hidden;
+    max-height: 0;
+  }
+}
+
+.collapseInner {
+  transition: margin-bottom 0.3s cubic-bezier(0, 0, 0, 1);
+  margin-bottom: 0;
+  max-height: 1000000px;
+}

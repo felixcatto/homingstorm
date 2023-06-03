@@ -1,0 +1,113 @@
+.checkbox {
+  @apply inline-flex items-center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input {
+  display: none;
+}
+
+.visualBox {
+  @apply rounded-sm border border-slate-300;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: white;
+  transition: 0.25s;
+  &_active {
+    background: var(--secondary);
+    border-color: var(--secondary);
+  }
+  &_disabled {
+    @apply bg-slate-200 border-slate-400;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.checkbox:hover .visualBox:not(.visualBox_disabled) {
+  border-color: var(--secondary);
+}
+
+.checkMark {
+  display: none;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  color: white;
+  font-size: 16px;
+  &_active {
+    display: block;
+  }
+}
+
+.partiallyChecked {
+  visibility: hidden;
+  position: absolute;
+  inset: 4px;
+  border-radius: 1px;
+  transition: 0.25s;
+  &_active {
+    visibility: visible;
+    background: var(--secondary);
+  }
+}
+
+.label {
+  margin-left: 8px;
+  &_disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.expandbox {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0;
+  cursor: pointer;
+  user-select: none;
+  &:hover .expandVisualBox {
+    border-color: var(--secondary);
+  }
+  &:hover .line {
+    background-color: var(--secondary);
+  }
+}
+
+.expandVisualBox {
+  @apply rounded-sm border border-slate-300;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: white;
+  transition: 0.25s;
+}
+
+.iconWrap {
+  position: absolute;
+  inset: 0;
+  transition: 0.25s;
+  &_active {
+    transform: rotate(90deg);
+  }
+}
+
+.line {
+  position: absolute;
+  top: 8px;
+  left: 3px;
+  right: 3px;
+  height: 2px;
+  transition: 0.25s;
+  background-color: var(--secondary);
+
+  &_two {
+    transform: rotate(90deg);
+  }
+  &_expanded&_one {
+    opacity: 0;
+  }
+}

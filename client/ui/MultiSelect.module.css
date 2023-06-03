@@ -1,0 +1,86 @@
+.selectRoot {
+  display: block;
+  &_focused {
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 4px var(--primary-rgba-25);
+  }
+}
+
+.selectRow {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+
+.selectedItem {
+  @apply shadow;
+  display: flex;
+  align-items: center;
+  flex: none;
+  background: var(--primary);
+  color: white;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  padding: 0px 10px;
+  padding-bottom: 2px;
+  padding-right: 4px;
+  border-radius: 12px;
+  user-select: none;
+}
+
+.removeIcon {
+  color: white;
+  cursor: pointer;
+  padding: 2px 4px;
+  padding-top: 4px;
+}
+
+.input {
+  appearance: none;
+  flex: 1 1 0%;
+  min-width: 60px;
+  padding-left: 5px;
+  padding-right: 5px;
+  outline: none;
+  height: 0;
+  cursor: default;
+  &_active {
+    height: auto;
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+}
+
+.list {
+  @apply shadow;
+  z-index: 1;
+  display: inline-block;
+  min-width: 250px;
+  padding: 4px;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.item {
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  transition: all 0.15s;
+  &:hover,
+  &_keyboardChoosen {
+    background: #eee;
+  }
+  &_nothingFound:hover {
+    background: initial;
+    cursor: default;
+  }
+}

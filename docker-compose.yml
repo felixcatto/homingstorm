@@ -1,0 +1,45 @@
+services:
+  app:
+    image: storm-app
+    build: .
+    depends_on:
+      - database
+    environment:
+      - PORT=3000
+      - POSTGRES_HOST=database
+
+  wss:
+    image: storm-wss
+    build:
+      context: .
+      dockerfile: services/webSocketServer/Dockerfile
+
+  database:
+    image: storm-database
+    build: services/database
+    volumes:
+      - database:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=1
+
+  caddy:
+    image: storm-caddy
+    build: services/caddy
+    depends_on:
+      - app
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - caddy_data:/data
+      - $PWD/services/caddy/Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      - APP_HOST=app
+      - APP_PORT=3000
+      - WSS_HOST=wss
+      - WSS_PORT=3001
+
+volumes:
+  database:
+  caddy_data:
