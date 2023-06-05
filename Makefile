@@ -2,14 +2,14 @@ install:
 	npm i
 
 start:
-	npx next dev
+	npx remix dev
 
 start-test-server:
 	NODE_ENV=test npx gulp startWsServer &
 	NODE_ENV=test npx next dev -p 3002
 
 start-prod-server:
-	npx next start
+	npx remix-serve build
 
 start-ws-server:
 	npx gulp startWsServer
@@ -18,13 +18,10 @@ start-prod-ws-server:
 	node dist/services/webSocketServer/bin.js
 
 build:
-	npx next build
+	npx remix build
 
 build-wss:
 	npx gulp buildWsServer
-
-analyze-bundle:
-	ANALYZE=true npx next build
 
 migrate:
 	npx knex migrate:latest

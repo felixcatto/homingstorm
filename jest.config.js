@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
   testPathIgnorePatterns: ['fixtures'],
-  watchPathIgnorePatterns: ['<rootDir>/\\.next/'],
+  watchPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/public/build/'],
   setupFiles: ['./__tests__/fixtures/envSetup'],
 
   testEnvironment: 'node',

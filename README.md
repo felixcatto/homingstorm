@@ -1,6 +1,6 @@
 # Description
 
-SPA app using NextJs + TypeScript + Postgress. Traditional CRUD blog with ability to add articles, tags and comments. Also have users, authentification and the ability to send messages to other users in chat mode. Live demo - https://rainoffire.ru
+SPA app using Remix + TypeScript + Postgress. Traditional CRUD blog with ability to add articles, tags and comments. Also have users, authentification and the ability to send messages to other users in chat mode. Live demo - https://rainoffire.ru
 
 ### Features
 
@@ -9,7 +9,7 @@ SPA app using NextJs + TypeScript + Postgress. Traditional CRUD blog with abilit
 - One button deploy \*. So you need only Docker and Git installed on server. Node, Postgress and Caddy will be handled via Docker
 - Database migrations
 - Backend API tests via Jest. Frontend unit / e2e tests via ReactTestingLibrary / Cypress
-- Notable techs - NextJs, TypeScript, ObjectionOrm, WebSockets, CSS Modules, Tailwind, Docker, Postgress, Caddy
+- Notable techs - Remix, TypeScript, ObjectionOrm, WebSockets, CSS Modules, Tailwind, Docker, Postgress, Caddy
 
 ### Commands
 
