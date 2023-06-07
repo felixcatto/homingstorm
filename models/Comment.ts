@@ -1,8 +1,8 @@
 import { Model } from 'objection';
 import * as y from 'yup';
-import { IArticle, IUser } from '../lib/types.js';
-import { Article } from './Article.js';
-import { User } from './User.js';
+import { IArticle, IUser } from '../lib/types';
+import { Article } from './Article';
+import { User } from './User';
 
 export class Comment extends Model {
   id: any;

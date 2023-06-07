@@ -1,11 +1,10 @@
-import { spawn } from 'child_process';
-import { deleteAsync } from 'del';
-import gulp from 'gulp';
-import swc from 'gulp-swc';
-import waitOn from 'wait-on';
-import webpack from 'webpack';
-import { loadEnv } from './lib/devUtils.js';
-import webpackConfig from './webpack.config.js';
+const { spawn } = require('child_process');
+const spawnAsync = require('await-spawn');
+const gulp = require('gulp');
+const swc = require('gulp-swc');
+const waitOn = require('wait-on');
+const { loadEnv } = require('./lib/devUtilsRequire');
+const awaitSpawn = require('await-spawn');
 
 loadEnv();
 
@@ -40,14 +39,19 @@ const restartServer = async () => {
 };
 process.on('exit', () => server && server.kill());
 
-const clean = async () => deleteAsync(['dist']);
+const clean = async () => awaitSpawn('rm', ['-rf', 'dist']);
 
 const copyMisc = () => gulp.src(paths.misc).pipe(gulp.dest(paths.dest));
 
 const transpileServerJs = () =>
   gulp
     .src(paths.serverJs, { base: '.', since: gulp.lastRun(transpileServerJs) })
-    .pipe(swc({ jsc: { target: 'es2022' } }))
+    .pipe(
+      swc({
+        jsc: { target: 'es2022' },
+        module: { type: 'commonjs' },
+      })
+    )
     .pipe(gulp.dest(paths.dest));
 
 const trackChangesInDist = () => {
@@ -67,4 +71,4 @@ const startWsServer = series(clean, transpileServerJs, copyMisc, startServer, wa
 
 const buildWsServer = series(clean, transpileServerJs, copyMisc);
 
-export { startWsServer, buildWsServer };
+module.exports = { startWsServer, buildWsServer };

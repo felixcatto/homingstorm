@@ -1,31 +1,30 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { FormikHelpers } from 'formik';
 import { Draft } from 'immer';
-import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import wsWebSocket from 'ws';
 import { Interpreter } from 'xstate';
 import * as y from 'yup';
 import { StoreApi, UseBoundStore } from 'zustand';
-import makeActions from '../client/globalStore/actions.js';
-import { storeSlice } from '../client/globalStore/store.js';
-import { selectedRowsStates } from '../client/lib/utils.jsx';
+import makeActions from '../client/globalStore/actions';
+import { storeSlice } from '../client/globalStore/store';
+import { selectedRowsStates } from '../client/lib/utils';
 import {
   Article,
-  articleSchema,
   Avatar,
+  Message,
+  Tag,
+  UnreadMessage,
+  User,
+  articleSchema,
   commentsSchema,
   getUserQuerySchema,
-  Message,
   messageSchema,
-  Tag,
   tagSchema,
-  UnreadMessage,
   unreadMessageSchema,
-  User,
   userLoginSchema,
   userSchema,
-} from '../models/index.js';
-import { orm } from './init.js';
+} from '../models/index';
+import { orm } from './init';
 import {
   asyncStates,
   filterTypes,
@@ -35,7 +34,7 @@ import {
   sortOrders,
   wsEvents,
   wsGeneralEvents,
-} from './utils.js';
+} from './utils';
 
 export type IOrm = typeof orm;
 
@@ -288,7 +287,7 @@ export type IFMultiSelectProps = {
 };
 
 export type IPayloadTypes = 'query' | 'body';
-export type IValidateFn = (schema, payloadType?: IPayloadTypes) => (req, res) => any;
+export type IValidateFn = <T>(schema, payload) => T;
 
 export type IPageProps = {
   currentUser: IUserWithAvatar;
@@ -463,3 +462,19 @@ export type IUseSelectedRows = <T extends object>(props: {
 };
 
 export type IKnexSeedArg = [tableName: string, fixture: object];
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      KEYS: string;
+      WSS_PORT: string;
+      PUBLIC_WSS_PORT: string;
+    }
+  }
+
+  interface Window {
+    ENV: {
+      PUBLIC_WSS_PORT: string;
+    };
+  }
+}

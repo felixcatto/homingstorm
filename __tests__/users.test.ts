@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { omit } from 'lodash';
 import { orm } from '../lib/init.js';
 import { encrypt } from '../lib/secure.js';
 import { getApiUrl, getUrl, makeNonThrowAxios } from '../lib/utils.js';

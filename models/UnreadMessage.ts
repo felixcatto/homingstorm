@@ -1,8 +1,8 @@
 import { Model } from 'objection';
 import * as y from 'yup';
-import { IMessage, IUser } from '../lib/types.js';
-import { Message } from './Message.js';
-import { User } from './User.js';
+import { IMessage, IUser } from '../lib/types';
+import { Message } from './Message';
+import { User } from './User';
 
 export class UnreadMessage extends Model {
   id: number;

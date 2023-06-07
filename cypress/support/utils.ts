@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 import { compile } from 'path-to-regexp';
 
 type IMakeUrlFor = <T extends object>(rawRoutes: T) => (name: keyof T, args?, opts?) => string;

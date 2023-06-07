@@ -1,7 +1,7 @@
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 import { compile } from 'path-to-regexp';
-import avatars from './avatars.js';
-import { IEncode, IMakeEnum, IMakeUrlFor } from './types.js';
+import avatars from './avatars';
+import { IEncode, IMakeEnum, IMakeUrlFor } from './types';
 
 export const makeEnum: IMakeEnum = (...args) =>
   args.reduce((acc, key) => ({ ...acc, [key]: key }), {} as any);
@@ -104,3 +104,13 @@ export const makeWssUrl = port => {
 
   return `ws://localhost:${port}`;
 };
+
+export const paramsToObject = entries => {
+  const result = {};
+  for (const [key, value] of entries) {
+    result[key] = value;
+  }
+  return result;
+};
+
+export const getQueryString = url => paramsToObject(new URL(url).searchParams);

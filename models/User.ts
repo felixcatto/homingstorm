@@ -1,11 +1,11 @@
 import { Model } from 'objection';
 import * as y from 'yup';
-import { encrypt } from '../lib/secure.js';
-import { IArticle, IAvatar, IComment, IRole } from '../lib/types.js';
-import { roles } from '../lib/utils.js';
-import { Article } from './Article.js';
-import { Avatar } from './Avatar.js';
-import { Comment } from './Comment.js';
+import { encrypt } from '../lib/secure';
+import { IArticle, IAvatar, IComment, IRole } from '../lib/types';
+import { roles } from '../lib/utils';
+import { Article } from './Article';
+import { Avatar } from './Avatar';
+import { Comment } from './Comment';
 
 export class User extends Model {
   id: number;

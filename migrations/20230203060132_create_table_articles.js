@@ -1,4 +1,4 @@
-export const up = async knex => {
+module.exports.up = async knex => {
   await knex.schema.createTable('articles', table => {
     table.increments().primary();
     table.string('title');
@@ -9,6 +9,6 @@ export const up = async knex => {
   });
 };
 
-export const down = async knex => {
+module.exports.down = async knex => {
   await knex.schema.dropTable('articles');
 };

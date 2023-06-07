@@ -1,3 +1,5 @@
+.PHONY: build
+
 install:
 	npm i
 
@@ -6,7 +8,7 @@ start:
 
 start-test-server:
 	NODE_ENV=test npx gulp startWsServer &
-	NODE_ENV=test npx next dev -p 3002
+	NODE_ENV=test npx remix dev --port 3002
 
 start-prod-server:
 	npx remix-serve build
@@ -55,10 +57,10 @@ database-seed-new:
 	npx knex seed:make $(arg)
 
 test:
-	NODE_OPTIONS=--experimental-vm-modules npx jest --runInBand
+	npx jest --runInBand
 
 test-file:
-	NODE_OPTIONS=--experimental-vm-modules npx jest --runInBand --watch $(arg)
+	npx jest --runInBand --watch $(arg)
 
 test-e2e:
 	NODE_ENV=test make database-seed

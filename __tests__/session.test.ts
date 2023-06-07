@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { omit } from 'lodash';
 import { keygrip, orm } from '../lib/init.js';
 import {
   authenticate,
@@ -6,6 +6,7 @@ import {
   decomposeValue,
   getApiUrl,
   getSessionValue,
+  getUrl,
   guestUser,
   makeNonThrowAxios,
 } from '../lib/utils.js';
@@ -53,14 +54,14 @@ describe('session', () => {
   it('GET /api/session', async () => {
     const [admin] = usersFixture;
     const loginOptions = await getLoginOptions(axios);
-    const res = await axios.get(getApiUrl('session'), loginOptions);
+    const res = await axios.get(getUrl('session'), loginOptions);
     const signature = keygrip.sign(String(admin.id));
     expect(res.data).toMatchObject({ userId: admin.id, signature });
   });
 
   it('POST /api/session', async () => {
     const [vasa] = usersFixture;
-    const res = await axios.post(getApiUrl('session'), vasa);
+    const res = await axios.post(getUrl('session'), vasa);
 
     const sessionValue = getSessionValue(res.headers);
     const [userId] = decomposeValue(sessionValue);
@@ -70,7 +71,7 @@ describe('session', () => {
   });
 
   it('DELETE /api/session', async () => {
-    const res = await axios.delete(getApiUrl('session'));
+    const res = await axios.delete(getUrl('session'));
 
     const sessionValue = getSessionValue(res.headers);
 

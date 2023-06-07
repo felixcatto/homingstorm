@@ -4,4 +4,4 @@ dist
 *.min.css
 
 # hack, because "@trivago/prettier-plugin-sort-imports" can't skip part of file
-pages/_app.tsx
+app/root.tsx

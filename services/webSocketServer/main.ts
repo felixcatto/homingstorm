@@ -1,9 +1,58 @@
 import fastifyWs from '@fastify/websocket';
+import cookie from 'cookie';
 import fy, { FastifyInstance } from 'fastify';
 import makeKeygrip from 'keygrip';
-import { omit } from 'lodash-es';
+import { IEncode, IGetUserId, IMakeEnum, IWSSDecodeReturn } from 'lib/types';
+import { isObject, isString, omit } from 'lodash';
 import { WebSocket } from 'ws';
-import { decode, encode, getUserId, wsEvents } from '../../lib/utils.js';
+
+export const makeEnum: IMakeEnum = (...args) =>
+  args.reduce((acc, key) => ({ ...acc, [key]: key }), {} as any);
+
+export const decode = (message: string) => JSON.parse(message) as IWSSDecodeReturn;
+
+export const encode: IEncode = (wsEvent, payload = '') =>
+  JSON.stringify({ type: wsEvent, payload });
+
+export const wsEvents = makeEnum(
+  'error',
+  'echo',
+  'ping',
+  'pong',
+  'signIn',
+  'signOut',
+  'signedInUsersIds',
+  'getSignedInUsersIds',
+  'notifyNewMessage',
+  'newMessagesArrived'
+);
+
+export const sessionName = 'session';
+
+export const decomposeValue = (compositValue: string) => {
+  const values = compositValue.split('.');
+  if (values.length !== 2) return [];
+  return values;
+};
+
+export const getUserId: IGetUserId = (rawCookies, keygrip) => {
+  let cookies;
+  if (isString(rawCookies)) {
+    cookies = cookie.parse(rawCookies);
+  } else if (isObject(rawCookies)) {
+    cookies = rawCookies;
+  } else {
+    return { userId: null, isSignatureCorrect: false };
+  }
+
+  const sessionValue = cookies[sessionName];
+  if (!sessionValue) return { userId: null, isSignatureCorrect: false };
+
+  const [userId, signature] = decomposeValue(sessionValue);
+  if (!userId || !signature) return { userId, isSignatureCorrect: false };
+
+  return { userId, isSignatureCorrect: keygrip.verify(userId, signature) };
+};
 
 type ISignedInUsers = {
   [userId: string]: {

@@ -1,11 +1,10 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-export default {
+module.exports = {
   testPathIgnorePatterns: ['fixtures'],
   watchPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/public/build/'],
   setupFiles: ['./__tests__/fixtures/envSetup'],
 
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.jsx?$': '$1',
     '^.+\\.module\\.css$': 'identity-obj-proxy',
@@ -13,5 +12,6 @@ export default {
 
   transform: {
     '^.+\\.tsx?$': ['@swc/jest', { jsc: { transform: { react: { runtime: 'automatic' } } } }],
+    '^.+\\.jsx?$': ['@swc/jest', { jsc: { transform: { react: { runtime: 'automatic' } } } }],
   },
 };

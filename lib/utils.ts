@@ -1,7 +1,8 @@
+import { json } from '@remix-run/node';
 import originalAxios from 'axios';
 import cookie from 'cookie';
-import { isNull, isObject, isString } from 'lodash-es';
-import { guestUser, isAdmin, isSignedIn } from './sharedUtils.js';
+import { isNull, isObject, isString } from 'lodash';
+import { guestUser, isAdmin, isSignedIn } from './sharedUtils';
 import {
   IAuthenticate,
   IGetGenericProps,
@@ -13,9 +14,9 @@ import {
   IUserClass,
   IValidateFn,
   IWSSDecodeReturn,
-} from './types.js';
+} from './types';
 
-export * from './sharedUtils.js';
+export * from './sharedUtils';
 
 export const switchHttpMethod: ISwitchHttpMethod = methods => async (req, res) => {
   const requestMethod = req.method?.toLowerCase() || '';
@@ -64,21 +65,16 @@ const getYupErrors = e => {
   return e.message;
 };
 
-export const validate: IValidateFn =
-  (schema, payloadType = 'body') =>
-  async (req, res) => {
-    const payload = payloadType === 'query' ? req.query : req.body;
-
-    try {
-      const validatedBody = schema.validateSync(payload, {
-        abortEarly: false,
-        stripUnknown: true,
-      });
-      return { [payloadType]: validatedBody };
-    } catch (e) {
-      res.status(400).json({ message: 'Input is not valid', errors: getYupErrors(e) });
-    }
-  };
+export const validate: IValidateFn = (schema, payload) => {
+  try {
+    return schema.validateSync(payload, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+  } catch (e) {
+    throw json({ message: 'Input is not valid', errors: getYupErrors(e) }, { status: 400 });
+  }
+};
 
 export const makeErrors = obj => ({ errors: obj });
 
@@ -94,15 +90,15 @@ export const checkValueUnique = async (Enitity, column, value, excludeId: string
   return { isUnique: true, errors: null };
 };
 
-export const checkAdmin = async (req, res, ctx) => {
-  if (!isAdmin(ctx.currentUser)) {
-    res.status(403).json({ message: 'Forbidden' });
+export const checkAdmin = currentUser => {
+  if (!isAdmin(currentUser)) {
+    throw json({ message: 'Forbidden' }, { status: 403 });
   }
 };
 
-export const checkSignedIn = async (req, res, ctx) => {
-  if (!isSignedIn(ctx.currentUser)) {
-    res.status(401).json({ message: 'Unauthorized' });
+export const checkSignedIn = currentUser => {
+  if (!isSignedIn(currentUser)) {
+    throw json({ message: 'Unauthorized' }, { status: 401 });
   }
 };
 
@@ -129,6 +125,7 @@ export const makeNonThrowAxios = baseURL => {
 };
 
 export const sessionName = 'session';
+export const setCookieHeader = 'Set-Cookie';
 
 export const getSessionValue = headers => {
   const rawCookies = headers['set-cookie'];
@@ -151,21 +148,17 @@ export const decomposeValue = (compositValue: string) => {
   return values;
 };
 
-export const setSessionCookie = (res, keygrip, userId) => {
+export const getSessionCookie = (keygrip, userId) => {
   const signature = keygrip.sign(String(userId));
   const sessionValue = composeValue(String(userId), signature);
-  res.setHeader(
-    'Set-Cookie',
-    cookie.serialize(sessionName, sessionValue, { path: '/', httpOnly: true })
-  );
+  return cookie.serialize(sessionName, sessionValue, { path: '/', httpOnly: true });
 };
 
-export const removeSessionCookie = res => {
-  res.setHeader(
-    'Set-Cookie',
-    cookie.serialize(sessionName, '', { path: '/', httpOnly: true, maxAge: 0 })
-  );
-};
+export const removeSessionCookie = cookie.serialize(sessionName, '', {
+  path: '/',
+  httpOnly: true,
+  maxAge: 0,
+});
 
 export const getUserId: IGetUserId = (rawCookies, keygrip) => {
   let cookies;
@@ -200,32 +193,33 @@ export const authenticate: IAuthenticate = async (rawCookies, keygrip, fetchUser
   return [user, false];
 };
 
-export const getUserFromRequest = async (res, cookies, keygrip, User: IUserClass) => {
-  // TODO: move fetchUser up, replace User parametr
-  const fetchUser = async userId => User.query().findById(userId).withGraphFetched('avatar');
+export const getCurrentUser = async (orm: IOrm, keygrip, requestHeaders) => {
+  const cookies = requestHeaders.get('Cookie');
+  const fetchUser = async userId => orm.User.query().findById(userId).withGraphFetched('avatar');
   const [currentUser, shouldRemoveSession] = await authenticate(cookies, keygrip, fetchUser);
 
-  if (shouldRemoveSession) removeSessionCookie(res);
-
-  return currentUser;
-};
-
-export const getCurrentUser = (orm: IOrm, keygrip) => async (req, res) => {
-  const { User } = orm;
-  const currentUser = await getUserFromRequest(res, req.cookies, keygrip, User);
-  return { currentUser };
-};
-
-export const unwrap = value => JSON.parse(JSON.stringify(value));
-
-export const getGenericProps: IGetGenericProps = async (props, otherProps: any = {}) => {
-  const { ctx, keygrip, orm } = props;
-  const { req, res } = ctx;
-  const currentUser = await getUserFromRequest(res, req.cookies, keygrip, orm.User);
-  let unreadMessages: any = [];
-  if (isSignedIn(currentUser)) {
-    unreadMessages = await orm.UnreadMessage.query().where('receiver_id', currentUser.id);
+  let headers = {};
+  if (shouldRemoveSession) {
+    headers = { [setCookieHeader]: removeSessionCookie };
   }
 
-  return unwrap({ ...otherProps, currentUser, unreadMessages });
+  return { currentUser, headers };
+};
+
+export const getParsedBody = async (request: Request) => {
+  let body = {};
+  const isFormRequest = request.headers
+    .get('content-type')
+    ?.startsWith('application/x-www-form-urlencoded');
+
+  if (isFormRequest) {
+    const formData = await request.formData();
+    formData.forEach((value, key) => {
+      body[key] = value;
+    });
+  } else {
+    body = await request.json();
+  }
+
+  return body;
 };

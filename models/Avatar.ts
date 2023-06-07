@@ -1,6 +1,6 @@
 import { Model } from 'objection';
-import { IUser } from '../lib/types.js';
-import { User } from './User.js';
+import { IUser } from '../lib/types';
+import { User } from './User';
 
 export class Avatar extends Model {
   id: number;

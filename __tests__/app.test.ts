@@ -1,5 +1,5 @@
 import originalAxios from 'axios';
-import { getUrl } from '../lib/utils.js';
+import { getUrl } from '../lib/utils';
 
 describe('requests', () => {
   const baseURL = process.env.HTTP_SERVER_URL;
