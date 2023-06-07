@@ -1,13 +1,14 @@
+import './css/index.css'; // Import FIRST
 import { cssBundleHref } from '@remix-run/css-bundle';
 import { LinksFunction, LoaderArgs, json } from '@remix-run/node';
 import {
-    Links,
-    LiveReload,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useLoaderData,
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react';
 import originalAxios from 'axios';
 import { keygrip, orm } from 'lib/init';
@@ -18,12 +19,11 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { IContext, IUserWithAvatar } from '../lib/types';
 import WssConnect from './common/WssConnect';
-import './css/index.css'; // Import FIRST
-import './css/tailwind.css'; // Import LAST
 import makeActions from './globalStore/actions';
 import { storeSlice } from './globalStore/store';
 import { Context, guestUser, makeWssUrl } from './lib/utils';
 import { makeSocketMachine, webSocketTypes } from './lib/wsActor';
+import './css/tailwind.css'; // Import LAST
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
