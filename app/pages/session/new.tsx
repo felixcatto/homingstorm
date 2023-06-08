@@ -15,6 +15,7 @@ import {
   Link,
   SubmitBtn,
   WithApiErrors,
+  getApiUrl,
   getUrl,
   roles,
   useContext,
@@ -26,7 +27,7 @@ import { send } from '../../lib/wsActor.js';
 import { TContent, TTrigger, Tooltip } from '../../ui/Tooltip.js';
 
 export const loader = async () => {
-  const adminUser: IUser = await orm.User.query().findOne('role', roles.admin);
+  const adminUser = (await orm.User.query().findOne('role', roles.admin)) as IUser;
   return json({ adminUser });
 };
 
@@ -37,11 +38,11 @@ const LoginForm = props => {
   const navigate = useNavigate();
 
   const onSubmit = useSubmit(async (userCreds: IUserLoginCreds) => {
-    const user = await axios.post<IPostSessionResponse>(getUrl('session'), userCreds);
+    const user = await axios.post<IPostSessionResponse>(getApiUrl('session'), userCreds);
     setGlobalState({ currentUser: user });
     navigate(getUrl('home'));
 
-    const data = await axios.get<IGetSessionResponse>(getUrl('session'));
+    const data = await axios.get<IGetSessionResponse>(getApiUrl('session'));
     send(wsActor, wsEvents.signIn, data);
   });
 

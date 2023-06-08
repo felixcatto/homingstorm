@@ -8,7 +8,7 @@ start:
 
 start-test-server:
 	NODE_ENV=test npx gulp startWsServer &
-	NODE_ENV=test npx remix dev --port 3002
+	KNEX_ENV=test npx remix dev --port 3002
 
 start-prod-server:
 	npx remix-serve build

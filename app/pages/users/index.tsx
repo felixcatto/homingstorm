@@ -5,7 +5,14 @@ import { orm } from '../../../lib/init';
 import { IUser } from '../../../lib/types';
 import Layout from '../../common/Layout';
 import { session } from '../../globalStore/store';
-import { Link, getUrl, useContext, usePendingValues, userRolesToIcons } from '../../lib/utils';
+import {
+  Link,
+  getApiUrl,
+  getUrl,
+  useContext,
+  usePendingValues,
+  userRolesToIcons,
+} from '../../lib/utils';
 import s from './styles.module.css';
 
 type IData = {
@@ -25,7 +32,7 @@ const Users = () => {
   const { isAdmin } = useStore(session);
 
   const [removeUser, userIdsToRemove] = usePendingValues(
-    id => axios.delete(getUrl('user', { id })),
+    id => axios.delete(getApiUrl('user', { id })),
     revalidator.revalidate
   );
 

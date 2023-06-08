@@ -1,8 +1,8 @@
 import { ActionArgs, LoaderArgs, json } from '@remix-run/node';
 import cookie from 'cookie';
-import { keygrip, orm } from '../../../lib/init';
-import { encrypt } from '../../../lib/secure';
-import { IGetSessionResponse, IUserLoginSchema } from '../../../lib/types';
+import { keygrip, orm } from '../../lib/init';
+import { encrypt } from '../../lib/secure';
+import { IGetSessionResponse, IUserLoginSchema } from '../../lib/types';
 import {
   checkSignedIn,
   decomposeValue,
@@ -15,8 +15,8 @@ import {
   sessionName,
   setCookieHeader,
   validate,
-} from '../../../lib/utils';
-import { userLoginSchema } from '../../../models/User';
+} from '../../lib/utils';
+import { userLoginSchema } from '../../models/User';
 
 export const loader = async ({ request }: LoaderArgs) => {
   const { currentUser } = await getCurrentUser(orm, keygrip, request.headers);
@@ -28,7 +28,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   const data: IGetSessionResponse = { userId: Number(userId), signature };
   return json(data);
 };
-
 export const action = async ({ request }: ActionArgs) => {
   switch (request.method) {
     case 'POST': {

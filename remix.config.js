@@ -43,10 +43,8 @@ module.exports = {
   routes: defineRoutes =>
     defineRoutes(route => {
       route(routes.home, 'pages/index.tsx');
-      route(routes.session, 'pages/session/index.tsx');
       route(routes.newSession, 'pages/session/new.tsx');
       route(routes.users, 'pages/users/index.tsx');
-      route(routes.user, 'pages/users/$id.tsx');
       route(routes.newUser, 'pages/users/new.tsx');
       route(routes.editUser, 'pages/users/$id.edit.tsx');
     }),

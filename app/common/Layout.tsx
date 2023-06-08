@@ -26,7 +26,7 @@ const Layout = ({ children }: any) => {
 
   const signOut = async () => {
     const { currentUser, signOutUserId } = await axios.delete<IDeleteSessionResponse>(
-      getUrl('session')
+      getApiUrl('session')
     );
 
     setGlobalState({ currentUser });

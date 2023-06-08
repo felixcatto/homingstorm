@@ -3,10 +3,9 @@ import knexConnect from 'knex';
 import { Model } from 'objection';
 import knexConfig from '../knexfile';
 import * as models from '../models/index';
-import { IOrm } from './types';
 
 const initialize = () => {
-  const mode = process.env.NODE_ENV;
+  const mode = process.env.KNEX_ENV || process.env.NODE_ENV;
   const keys = process.env.KEYS!.split(',');
   const keygrip = makeKeygrip(keys);
 
@@ -17,7 +16,7 @@ const initialize = () => {
   return { orm, keys, keygrip };
 };
 
-let container: any;
+let container: ReturnType<typeof initialize>;
 
 if (process.env.NODE_ENV === 'production') {
   container = initialize();
